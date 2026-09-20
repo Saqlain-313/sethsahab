@@ -26,6 +26,7 @@ import AdminLottery from "./admin/adminPages/AdminLottery";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import AdminDeposits from "./admin/adminPages/AdminDeposits";
 import WithdrawalManagement from "./admin/adminPages/WithdrawalManagement";
+import WithdrawalRequest from "./Pages/WithdrawalRequest";
 
 function App() {
   return (
@@ -49,6 +50,8 @@ function App() {
           <Route path="/buy-ticket" element={<BuyTicket />} />
 
           <Route path="/my-tickets" element={<MyTickets />} />
+          <Route path="/user/withdraw" element={<WithdrawalRequest />} />
+
           <Route
             path="/payment-success"
             element={<PaymentSuccess />}
