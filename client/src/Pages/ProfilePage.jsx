@@ -495,7 +495,7 @@ const ProfilePage = () => {
           MENU
       ================================================== */}
 
-     <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-4 flex flex-col gap-3">
 
         {/* MY TICKETS */}
 
@@ -512,7 +512,7 @@ const ProfilePage = () => {
           icon={<Trophy />}
           title="रिजल्ट"
           description="सभी ड्रॉ के परिणाम देखें"
-          onClick={() => navigate("/result")}
+          onClick={() => navigate("/results")}
         />
 
         {/* WHATSAPP SUPPORT */}

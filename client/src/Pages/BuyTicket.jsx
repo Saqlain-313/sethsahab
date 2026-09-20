@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import firstPrize from "../assets/1trophy.png";
 import secondPrize from "../assets/2trophy.png";
-import kuberBanner from "../assets/3ban.png";
+import kuberBanner from "../assets/4ban.jpeg";
 import thirdPrize from "../assets/3trophy.png";
 
 import {
@@ -786,123 +786,230 @@ const BuyTicket = () => {
         />
       </section>
 
-      <main className="px-[21px] pt-3">
+      <main className="px-[14px] pt-3">
 
         {/* =================================================
             LOTTERY INFO
         ================================================= */}
 
-        <section className="rounded-[18px] border border-[#d7b838] bg-[#070909] overflow-hidden">
+        <section
+          className="
+    relative
+    rounded-[18px]
+    border border-[#d7b838]/80
+    bg-[#040505]
+    overflow-hidden
+    shadow-[0_0_20px_rgba(215,184,56,0.10),inset_0_0_35px_rgba(215,184,56,0.04)]
+  "
+        >
+          {/* GOLD AMBIENT GLOW */}
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_50%,rgba(245,206,84,0.10),transparent_35%),radial-gradient(circle_at_82%_50%,rgba(245,206,84,0.08),transparent_35%)]" />
 
-          <div className="grid grid-cols-2 min-h-[124px]">
+          {/* TOP GOLD LINE */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#f5ce54] to-transparent opacity-80" />
 
-            <div className="flex items-center gap-4 px-4 border-r border-[#292929]">
+          <div className="relative grid grid-cols-2 min-h-[124px]">
 
-              <CalendarIcon />
+            {/* =================================================
+        NEXT DRAW
+    ================================================= */}
+            <div className="flex items-center gap-4 px-2 border-r border-[#d7b838]/25">
 
-              <div>
+              <div className="shrink-0 flex items-center justify-center">
+                <CalendarIcon
+                  size={31}
+                  strokeWidth={2.5}
+                  className="
+            text-[#f5ce54]
+            drop-shadow-[0_0_5px_rgba(245,206,84,1)]
+            drop-shadow-[0_0_12px_rgba(245,206,84,0.95)]
+            drop-shadow-[0_0_24px_rgba(245,206,84,0.75)]
+            drop-shadow-[0_0_38px_rgba(245,206,84,0.5)]
+          "
+                />
+              </div>
 
-                <p className="text-[14px] font-medium">
+              <div className="min-w-0">
+                <p className="text-[18px] font-medium text-white/95">
                   अगला ड्रॉ (लकी ड्रॉ)
                 </p>
 
-                <p className="text-[18px] font-extrabold text-[#f5ce54] mt-2 whitespace-nowrap">
-                  {activeLoading
-                    ? "लोड हो रहा है..."
-                    : drawDateText}
+                <p
+                  className="
+            text-[21px]
+            font-extrabold
+            text-[#f5ce54]
+            mt-1
+            whitespace-nowrap
+            drop-shadow-[0_0_8px_rgba(245,206,84,0.55)]
+          "
+                >
+                  {activeLoading ? "लोड हो रहा है..." : drawDateText}
                 </p>
-
               </div>
-
             </div>
 
             {/* =================================================
-                LIVE COUNTDOWN
-            ================================================= */}
-
-            <div className="flex flex-col justify-center px-4">
+        LIVE COUNTDOWN
+    ================================================= */}
+            <div className="flex flex-col justify-center px-8">
 
               <div className="flex items-center gap-2">
 
-                <ClockIcon />
+                <ClockIcon
+                  size={29}
+                  strokeWidth={2.5}
+                  className="
+            text-[#f5ce54]
+            drop-shadow-[0_0_5px_rgba(245,206,84,1)]
+            drop-shadow-[0_0_12px_rgba(245,206,84,0.95)]
+            drop-shadow-[0_0_24px_rgba(245,206,84,0.75)]
+            drop-shadow-[0_0_38px_rgba(245,206,84,0.5)]
+          "
+                />
 
-                <span className="text-[13px]">
+                <span className="text-[20px] font-medium text-white/95">
                   {countdown.expired
                     ? "लकी ड्रॉ"
                     : "ड्रा शुरू होने में"}
                 </span>
-
               </div>
 
-              <div className="mt-3">
+              <div className="mt-3 px-2">
 
                 {!countdown.available ? (
-                  <p className="text-[18px] font-bold text-[#f5ce54]">
+                  <p
+                    className="
+              text-[21px]
+              font-bold
+              text-[#f5ce54]
+              drop-shadow-[0_0_8px_rgba(245,206,84,0.6)]
+            "
+                  >
                     टाइमर उपलब्ध नहीं
                   </p>
                 ) : countdown.expired ? (
-                  <p className="text-[18px] font-extrabold text-[#f5ce54]">
+                  <p
+                    className="
+              text-[20px]
+              font-extrabold
+              text-[#f5ce54]
+              drop-shadow-[0_0_8px_rgba(245,206,84,0.6)]
+            "
+                  >
                     ड्रा शुरू हो गया
                   </p>
                 ) : (
                   <div className="flex items-center gap-[3px]">
 
+                    {/* DAYS */}
                     <div className="flex flex-col items-center">
-                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
-                        {String(
-                          countdown.days
-                        ).padStart(2, "0")}
+                      <span
+                        className="
+                  text-[22px]
+                  font-extrabold
+                  text-[#f5ce54]
+                  leading-none
+                  drop-shadow-[0_0_8px_rgba(245,206,84,0.75)]
+                "
+                      >
+                        {String(countdown.days).padStart(2, "0")}
                       </span>
 
-                      <span className="text-[8px] text-white/45 mt-1">
+                      <span className="text-[8px] text-[#f5ce54]/55 mt-1">
                         दिन
                       </span>
                     </div>
 
-                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                    <span
+                      className="
+                text-[#f5ce54]
+                text-[17px]
+                font-bold
+                mb-3
+                drop-shadow-[0_0_7px_rgba(245,206,84,0.8)]
+              "
+                    >
                       :
                     </span>
 
+                    {/* HOURS */}
                     <div className="flex flex-col items-center">
-                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
-                        {String(
-                          countdown.hours
-                        ).padStart(2, "0")}
+                      <span
+                        className="
+                  text-[22px]
+                  font-extrabold
+                  text-[#f5ce54]
+                  leading-none
+                  drop-shadow-[0_0_8px_rgba(245,206,84,0.75)]
+                "
+                      >
+                        {String(countdown.hours).padStart(2, "0")}
                       </span>
 
-                      <span className="text-[8px] text-white/45 mt-1">
+                      <span className="text-[8px] text-[#f5ce54]/55 mt-1">
                         घंटे
                       </span>
                     </div>
 
-                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                    <span
+                      className="
+                text-[#f5ce54]
+                text-[17px]
+                font-bold
+                mb-3
+                drop-shadow-[0_0_7px_rgba(245,206,84,0.8)]
+              "
+                    >
                       :
                     </span>
 
+                    {/* MINUTES */}
                     <div className="flex flex-col items-center">
-                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
-                        {String(
-                          countdown.minutes
-                        ).padStart(2, "0")}
+                      <span
+                        className="
+                  text-[22px]
+                  font-extrabold
+                  text-[#f5ce54]
+                  leading-none
+                  drop-shadow-[0_0_8px_rgba(245,206,84,0.75)]
+                "
+                      >
+                        {String(countdown.minutes).padStart(2, "0")}
                       </span>
 
-                      <span className="text-[8px] text-white/45 mt-1">
+                      <span className="text-[8px] text-[#f5ce54]/55 mt-1">
                         मिनट
                       </span>
                     </div>
 
-                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                    <span
+                      className="
+                text-[#f5ce54]
+                text-[17px]
+                font-bold
+                mb-3
+                drop-shadow-[0_0_7px_rgba(245,206,84,0.8)]
+              "
+                    >
                       :
                     </span>
 
+                    {/* SECONDS */}
                     <div className="flex flex-col items-center">
-                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
-                        {String(
-                          countdown.seconds
-                        ).padStart(2, "0")}
+                      <span
+                        className="
+                  text-[22px]
+                  font-extrabold
+                  text-[#f5ce54]
+                  leading-none
+                  drop-shadow-[0_0_8px_rgba(245,206,84,0.75)]
+                "
+                      >
+                        {String(countdown.seconds).padStart(2, "0")}
                       </span>
 
-                      <span className="text-[8px] text-white/45 mt-1">
+                      <span className="text-[8px] text-[#f5ce54]/55 mt-1">
                         सेकंड
                       </span>
                     </div>
@@ -911,11 +1018,8 @@ const BuyTicket = () => {
                 )}
 
               </div>
-
             </div>
-
           </div>
-
         </section>
 
         {/* =================================================
