@@ -24,6 +24,8 @@ import Users from "./admin/adminPages/Users";
 import LotteryConfig from "./admin/adminPages/LotteryConfig";
 import AdminLottery from "./admin/adminPages/AdminLottery";
 import PaymentSuccess from "./Pages/PaymentSuccess";
+import AdminDeposits from "./admin/adminPages/AdminDeposits";
+import WithdrawalManagement from "./admin/adminPages/WithdrawalManagement";
 
 function App() {
   return (
@@ -96,6 +98,15 @@ function App() {
             path="/admin/lottery"
             element={<AdminLottery />}
           />
+          <Route
+            path="/admin/deposits"
+            element={
+              <AdminDeposits />
+            }
+          />
+
+          <Route path="/admin/withdrawals" element={<WithdrawalManagement />} />
+
 
         </Route>
 

@@ -49,11 +49,10 @@ const AdminLayout = () => {
     `
       flex items-center gap-3 rounded-lg px-4 py-3
       text-sm font-medium transition
-      ${
-        isActive
-          ? "bg-white/10 text-white"
-          : "text-slate-400 hover:bg-white/5 hover:text-white"
-      }
+      ${isActive
+      ? "bg-white/10 text-white"
+      : "text-slate-400 hover:bg-white/5 hover:text-white"
+    }
     `;
 
   // =========================
@@ -89,6 +88,14 @@ const AdminLayout = () => {
     if (path === "/admin/lottery") {
       return "Admin Config";
     }
+    if (path === "/admin/deposits") {
+      return "All deposit"
+    }
+
+    if (path === "/admin/withdrawals") {
+      return "All withdrawals"
+    }
+
 
     return "Admin Panel";
   };
@@ -121,10 +128,9 @@ const AdminLayout = () => {
           lg:translate-x-0
           lg:shadow-none
 
-          ${
-            sidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full"
+          ${sidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full"
           }
         `}
       >
@@ -205,6 +211,26 @@ const AdminLayout = () => {
             <span className="text-lg">⚙️</span>
             <span>Config</span>
           </NavLink>
+
+          <NavLink
+            to="/admin/deposits"
+            className={navClass}
+            onClick={closeSidebar}
+          >
+            <span className="text-lg">⚙️</span>
+            <span>Deposit</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/withdrawals"
+            className={navClass}
+            onClick={closeSidebar}
+          >
+            <span className="text-lg">⚙️</span>
+            <span>Withdrawals</span>
+          </NavLink>
+
+
 
           <NavLink
             to="/amount"
