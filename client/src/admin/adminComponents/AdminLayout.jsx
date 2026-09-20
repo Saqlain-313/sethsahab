@@ -69,7 +69,7 @@ const AdminLayout = () => {
       return "Users";
     }
 
-    if (path === "/results") {
+    if (path === "/admin/results") {
       return "Results";
     }
 
@@ -195,7 +195,7 @@ const AdminLayout = () => {
           </NavLink>
 
           <NavLink
-            to="/results"
+            to="/admin/results"
             className={navClass}
             onClick={closeSidebar}
           >
