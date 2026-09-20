@@ -110,7 +110,7 @@ const Header = () => {
       </header>
 
       {/* Navbar ki exact height jitni space */}
-      <div className="h-[81px]" />
+      <div className="h-[71px]" />
     </>
   );
 };
