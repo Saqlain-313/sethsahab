@@ -23,6 +23,144 @@ import {
 } from "../reducer/slice/depositSlice";
 
 // =====================================================
+// ICON GLOW
+// =====================================================
+
+const iconGlow =
+  "drop-shadow-[0_0_6px_rgba(245,197,66,0.95)] drop-shadow-[0_0_15px_rgba(245,197,66,0.65)] drop-shadow-[0_0_26px_rgba(245,197,66,0.35)]";
+
+// =====================================================
+// HINDI MONTHS
+// =====================================================
+
+const HINDI_MONTHS = [
+  "जनवरी",
+  "फरवरी",
+  "मार्च",
+  "अप्रैल",
+  "मई",
+  "जून",
+  "जुलाई",
+  "अगस्त",
+  "सितंबर",
+  "अक्टूबर",
+  "नवंबर",
+  "दिसंबर",
+];
+
+// =====================================================
+// GET DRAW TIMESTAMP
+// =====================================================
+// API:
+// drawDate = "2026-09-20T18:30:00.000Z"
+// drawTime = "18:50"
+// drawTime is treated as IST.
+//
+// 18:50 IST = 13:20 UTC
+// =====================================================
+
+const getDrawTimestamp = (lotteryConfig) => {
+  if (!lotteryConfig?.drawDate || !lotteryConfig?.drawTime) {
+    return null;
+  }
+
+  const drawDate = new Date(lotteryConfig.drawDate);
+
+  if (Number.isNaN(drawDate.getTime())) {
+    return null;
+  }
+
+  const [hoursString, minutesString] = String(
+    lotteryConfig.drawTime
+  ).split(":");
+
+  const hours = Number(hoursString);
+  const minutes = Number(minutesString);
+
+  if (
+    !Number.isFinite(hours) ||
+    !Number.isFinite(minutes) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  ) {
+    return null;
+  }
+
+  const year = drawDate.getUTCFullYear();
+  const month = drawDate.getUTCMonth();
+  const day = drawDate.getUTCDate();
+
+  // IST -> UTC
+  const utcTimestamp = Date.UTC(
+    year,
+    month,
+    day,
+    hours - 5,
+    minutes - 30,
+    0,
+    0
+  );
+
+  return utcTimestamp;
+};
+
+// =====================================================
+// COUNTDOWN
+// =====================================================
+
+const getCountdown = (drawTimestamp) => {
+  if (!drawTimestamp) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      expired: false,
+      available: false,
+    };
+  }
+
+  const now = Date.now();
+  const difference = drawTimestamp - now;
+
+  if (difference <= 0) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      expired: true,
+      available: true,
+    };
+  }
+
+  const totalSeconds = Math.floor(difference / 1000);
+
+  const days = Math.floor(totalSeconds / 86400);
+
+  const hours = Math.floor(
+    (totalSeconds % 86400) / 3600
+  );
+
+  const minutes = Math.floor(
+    (totalSeconds % 3600) / 60
+  );
+
+  const seconds = totalSeconds % 60;
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    expired: false,
+    available: true,
+  };
+};
+
+// =====================================================
 // BUY TICKET
 // =====================================================
 
@@ -125,6 +263,19 @@ const BuyTicket = () => {
   const [voterxGateway, setVoterxGateway] = useState(null);
 
   // ===================================================
+  // COUNTDOWN STATE
+  // ===================================================
+
+  const [countdown, setCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    expired: false,
+    available: false,
+  });
+
+  // ===================================================
   // INITIAL API CALLS
   // ===================================================
 
@@ -133,6 +284,58 @@ const BuyTicket = () => {
     dispatch(getAmount());
     dispatch(getGatewaysUser());
   }, [dispatch]);
+
+  // ===================================================
+  // LIVE DRAW COUNTDOWN
+  // ===================================================
+
+  useEffect(() => {
+    if (!lotteryConfig?.drawDate || !lotteryConfig?.drawTime) {
+      setCountdown({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        expired: false,
+        available: false,
+      });
+
+      return;
+    }
+
+    const drawTimestamp = getDrawTimestamp(lotteryConfig);
+
+    if (!drawTimestamp) {
+      setCountdown({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        expired: false,
+        available: false,
+      });
+
+      return;
+    }
+
+    const updateCountdown = () => {
+      setCountdown(getCountdown(drawTimestamp));
+    };
+
+    // Immediately calculate on page load
+    updateCountdown();
+
+    // Update every second
+    const interval = setInterval(
+      updateCountdown,
+      1000
+    );
+
+    return () => clearInterval(interval);
+  }, [
+    lotteryConfig?.drawDate,
+    lotteryConfig?.drawTime,
+  ]);
 
   // ===================================================
   // FIND VOTERX GATEWAY
@@ -170,7 +373,29 @@ const BuyTicket = () => {
   // ===================================================
 
   const drawDateText = useMemo(() => {
-    if (!lotteryConfig?.month || !lotteryConfig?.year) {
+    if (!lotteryConfig) {
+      return "ड्रॉ जल्द घोषित होगा";
+    }
+
+    // Prefer actual drawDate from API
+    if (lotteryConfig.drawDate) {
+      const date = new Date(
+        lotteryConfig.drawDate
+      );
+
+      if (!Number.isNaN(date.getTime())) {
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth();
+        const year = date.getUTCFullYear();
+
+        return `${day} ${HINDI_MONTHS[month]} ${year}`;
+      }
+    }
+
+    if (
+      !lotteryConfig?.month ||
+      !lotteryConfig?.year
+    ) {
       return "ड्रॉ जल्द घोषित होगा";
     }
 
@@ -218,7 +443,10 @@ const BuyTicket = () => {
     setLocalError("");
     setLocalSuccess("");
 
-    if (value && index < numbers.length - 1) {
+    if (
+      value &&
+      index < numbers.length - 1
+    ) {
       const nextInput = document.querySelector(
         `[data-lottery-index="${index + 1}"]`
       );
@@ -231,15 +459,19 @@ const BuyTicket = () => {
   // HANDLE BACKSPACE
   // ===================================================
 
-  const handleNumberKeyDown = (index, event) => {
+  const handleNumberKeyDown = (
+    index,
+    event
+  ) => {
     if (
       event.key === "Backspace" &&
       !numbers[index] &&
       index > 0
     ) {
-      const previousInput = document.querySelector(
-        `[data-lottery-index="${index - 1}"]`
-      );
+      const previousInput =
+        document.querySelector(
+          `[data-lottery-index="${index - 1}"]`
+        );
 
       previousInput?.focus();
     }
@@ -281,9 +513,10 @@ const BuyTicket = () => {
     clearMessages();
 
     setTimeout(() => {
-      const firstInput = document.querySelector(
-        '[data-lottery-index="0"]'
-      );
+      const firstInput =
+        document.querySelector(
+          '[data-lottery-index="0"]'
+        );
 
       firstInput?.focus();
     }, 50);
@@ -321,9 +554,14 @@ const BuyTicket = () => {
       // CREATE LOTTERY NUMBER
       // ===============================================
 
-      const lotteryNumber = numbers.join("");
+      const lotteryNumber =
+        numbers.join("");
 
-      if (!/^\d{6}$/.test(lotteryNumber)) {
+      if (
+        !/^\d{6}$/.test(
+          lotteryNumber
+        )
+      ) {
         setLocalError(
           "लॉटरी नंबर ठीक 6 अंकों का होना चाहिए"
         );
@@ -352,7 +590,8 @@ const BuyTicket = () => {
       // CHECK AMOUNT
       // ===============================================
 
-      const amount = Number(ticketPriceFromApi);
+      const amount =
+        Number(ticketPriceFromApi);
 
       if (!amount || amount <= 0) {
         setLocalError(
@@ -372,11 +611,12 @@ const BuyTicket = () => {
           getGatewaysUser()
         ).unwrap();
 
-        const gatewayList = Array.isArray(result)
-          ? result
-          : result?.gateways ||
-          result?.data ||
-          [];
+        const gatewayList =
+          Array.isArray(result)
+            ? result
+            : result?.gateways ||
+            result?.data ||
+            [];
 
         gateway =
           gatewayList.find((item) => {
@@ -448,14 +688,9 @@ const BuyTicket = () => {
           paymentMethod: "INR",
           channel: "voterx",
           amount,
-
           utr: "",
-
           configId: lotteryConfig._id,
-
           number: lotteryNumber,
-
-          // IMPORTANT
         })
       ).unwrap();
 
@@ -487,7 +722,8 @@ const BuyTicket = () => {
       // OPEN VOTERX
       // ===============================================
 
-      window.location.href = paymentUrl;
+      window.location.href =
+        paymentUrl;
     } catch (error) {
       console.error(
         "VOTERX PAYMENT ERROR:",
@@ -580,6 +816,10 @@ const BuyTicket = () => {
 
             </div>
 
+            {/* =================================================
+                LIVE COUNTDOWN
+            ================================================= */}
+
             <div className="flex flex-col justify-center px-4">
 
               <div className="flex items-center gap-2">
@@ -587,18 +827,88 @@ const BuyTicket = () => {
                 <ClockIcon />
 
                 <span className="text-[13px]">
-                  लकी ड्रॉ
+                  {countdown.expired
+                    ? "लकी ड्रॉ"
+                    : "ड्रा शुरू होने में"}
                 </span>
 
               </div>
 
               <div className="mt-3">
 
-                <p className="text-[20px] font-bold text-[#f5ce54]">
-                  {lotteryConfig?.isActive
-                    ? "ACTIVE"
-                    : "INACTIVE"}
-                </p>
+                {!countdown.available ? (
+                  <p className="text-[18px] font-bold text-[#f5ce54]">
+                    टाइमर उपलब्ध नहीं
+                  </p>
+                ) : countdown.expired ? (
+                  <p className="text-[18px] font-extrabold text-[#f5ce54]">
+                    ड्रा शुरू हो गया
+                  </p>
+                ) : (
+                  <div className="flex items-center gap-[3px]">
+
+                    <div className="flex flex-col items-center">
+                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
+                        {String(
+                          countdown.days
+                        ).padStart(2, "0")}
+                      </span>
+
+                      <span className="text-[8px] text-white/45 mt-1">
+                        दिन
+                      </span>
+                    </div>
+
+                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                      :
+                    </span>
+
+                    <div className="flex flex-col items-center">
+                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
+                        {String(
+                          countdown.hours
+                        ).padStart(2, "0")}
+                      </span>
+
+                      <span className="text-[8px] text-white/45 mt-1">
+                        घंटे
+                      </span>
+                    </div>
+
+                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                      :
+                    </span>
+
+                    <div className="flex flex-col items-center">
+                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
+                        {String(
+                          countdown.minutes
+                        ).padStart(2, "0")}
+                      </span>
+
+                      <span className="text-[8px] text-white/45 mt-1">
+                        मिनट
+                      </span>
+                    </div>
+
+                    <span className="text-[#f5ce54] text-[17px] font-bold mb-3">
+                      :
+                    </span>
+
+                    <div className="flex flex-col items-center">
+                      <span className="text-[18px] font-extrabold text-[#f5ce54] leading-none">
+                        {String(
+                          countdown.seconds
+                        ).padStart(2, "0")}
+                      </span>
+
+                      <span className="text-[8px] text-white/45 mt-1">
+                        सेकंड
+                      </span>
+                    </div>
+
+                  </div>
+                )}
 
               </div>
 
@@ -836,28 +1146,33 @@ const BuyTicket = () => {
             type="button"
             onClick={handlePurchase}
             disabled={isPurchaseDisabled}
-            className="w-full h-[60px] mt-4 rounded-[14px] bg-gradient-to-b from-[#ffe16b] via-[#f8ca42] to-[#eab52c] text-black text-[20px] font-extrabold flex items-center justify-center gap-3 shadow-[0_4px_16px_rgba(245,197,66,0.18)] active:scale-[0.99] transition-transform disabled:cursor-not-allowed disabled:opacity-60"
+            className="relative w-full h-[60px] mt-4 rounded-[14px] overflow-hidden bg-gradient-to-b from-[#fff59a] via-[#ffd84a] to-[#f4c21f] text-black text-[20px] font-extrabold flex items-center justify-center gap-3 border border-[#fff8c7] shadow-[0_0_12px_rgba(255,221,55,0.95),0_0_28px_rgba(255,210,35,0.75),0_0_55px_rgba(255,200,20,0.5),0_8px_30px_rgba(255,205,30,0.35),inset_0_2px_0_rgba(255,255,255,0.98),inset_0_-4px_8px_rgba(180,120,0,0.18)] active:scale-[0.98] transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_16px_rgba(255,230,70,1),0_0_35px_rgba(255,215,40,0.9),0_0_70px_rgba(255,200,20,0.6),0_10px_35px_rgba(255,205,30,0.45)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
           >
+            {/* TOP SHINE */}
+            <span className="absolute top-0 left-[8%] right-[8%] h-[2px] bg-white/95 blur-[0.5px]" />
+
+            {/* SOFT CENTER GLOW */}
+            <span className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,220,0.5),transparent_55%)] pointer-events-none" />
 
             <Ticket
               size={35}
               strokeWidth={2.5}
-              className="text-[#090909] rotate-[-17deg] shrink-0"
+              className={`relative z-10 text-[#090909] rotate-[-17deg] shrink-0 ${iconGlow}`}
             />
 
-            <span>
+            <span className="relative z-10">
               {depositLoading
                 ? "VoterX खोला जा रहा है..."
                 : `अभी खरीदें - ₹${TICKET_PRICE}`}
             </span>
 
             {!depositLoading && (
-              <span className="text-[28px] leading-none">
+              <span className="relative z-10 text-[30px] leading-none font-bold">
                 →
               </span>
             )}
-
           </button>
+
 
           {/* =================================================
               PAYMENT INFO
@@ -987,6 +1302,7 @@ const CalendarIcon = () => (
     strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={iconGlow}
   >
     <rect
       x="3"
@@ -1012,8 +1328,9 @@ const ClockIcon = () => (
     height="25"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#fff"
+    stroke="#f5ce54"
     strokeWidth="1.8"
+    className={iconGlow}
   >
     <circle
       cx="12"
@@ -1037,6 +1354,7 @@ const TrophyIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="1.8"
+    className={iconGlow}
   >
     <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z" />
 
@@ -1056,6 +1374,7 @@ const TargetIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="1.8"
+    className={iconGlow}
   >
     <circle
       cx="12"
@@ -1092,6 +1411,7 @@ const ShuffleIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="2"
+    className={iconGlow}
   >
     <path d="M3 7h3c4 0 6 10 10 10h5" />
 
@@ -1115,9 +1435,9 @@ const InfoIcon = () => (
     height="17"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="#f5ce54"
     strokeWidth="2"
-    className="text-white/50 shrink-0"
+    className={`${iconGlow} shrink-0`}
   >
     <circle
       cx="12"
@@ -1141,6 +1461,7 @@ const TicketIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="1.7"
+    className={iconGlow}
   >
     <path d="M3 8a2 2 0 002-2h14a2 2 0 002 2v3a2 2 0 000 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 000-4V8z" />
 
@@ -1157,8 +1478,8 @@ const LockIcon = () => (
     width="15"
     height="15"
     viewBox="0 0 24 24"
-    fill="currentColor"
-    className="text-white/45"
+    fill="#f5ce54"
+    className={iconGlow}
   >
     <path d="M17 9V7a5 5 0 00-10 0v2H5v12h14V9h-2zm-8 0V7a3 3 0 016 0v2H9z" />
   </svg>
@@ -1176,6 +1497,7 @@ const ShieldIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="1.8"
+    className={iconGlow}
   >
     <path d="M12 2l8 4v6c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-4z" />
 
@@ -1193,6 +1515,7 @@ const ZapIcon = () => (
     height="29"
     viewBox="0 0 24 24"
     fill="#f5ce54"
+    className={iconGlow}
   >
     <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
   </svg>
@@ -1208,6 +1531,7 @@ const UsersIcon = () => (
     height="29"
     viewBox="0 0 24 24"
     fill="#f5ce54"
+    className={iconGlow}
   >
     <circle
       cx="9"
@@ -1242,6 +1566,7 @@ const SupportIcon = () => (
     fill="none"
     stroke="#f5ce54"
     strokeWidth="1.8"
+    className={iconGlow}
   >
     <path d="M4 13a8 8 0 0116 0" />
 
