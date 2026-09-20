@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 
 // ================= CLIENT =================
@@ -106,6 +106,27 @@ const WhatsappFloatingButton = () => {
       />
     </button>
   );
+};
+
+// ==========================================================
+// WHATSAPP VISIBILITY
+// ==========================================================
+const WhatsappForUser = () => {
+  const location = useLocation();
+
+  // Admin ke saare routes par WhatsApp hide rahega
+  const isAdminRoute =
+    location.pathname.startsWith("/admin") ||
+    location.pathname === "/dashboard" ||
+    location.pathname === "/users" ||
+    location.pathname === "/amount" ||
+    location.pathname === "/lottery-config";
+
+  if (isAdminRoute) {
+    return null;
+  }
+
+  return <WhatsappFloatingButton />;
 };
 
 function App() {
@@ -250,10 +271,9 @@ function App() {
       </Routes>
 
       {/* =====================================================
-          WHATSAPP FLOATING BUTTON
+          WHATSAPP - USER SIDE ONLY
       ===================================================== */}
-
-      <WhatsappFloatingButton />
+      <WhatsappForUser />
     </>
   );
 }

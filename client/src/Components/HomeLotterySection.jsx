@@ -465,7 +465,7 @@ const HomeLotterySection = () => {
           ===================================================== */}
 
           <div
-            className="w-[139px] h-[90px] mr-[4px] rounded-[16px] border border-[#a51d25] flex flex-col items-center justify-center mt-2"
+            className="w-[160px] h-[98px] mr-[4px] rounded-[14px] border border-[#a51d25] flex flex-col items-center justify-center mt-2"
             style={{
               background:
                 "linear-gradient(180deg, #b82a30 0%, #711116 100%)",
@@ -491,7 +491,7 @@ const HomeLotterySection = () => {
 
               </div>
 
-              <span className="text-white text-[13px] font-bold">
+              <span className="text-white text-[15px] font-bold">
 
                 {countdown.expired
                   ? "ड्रा शुरू हो गया"
