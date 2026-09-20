@@ -21,6 +21,13 @@ import {
   selectMyLotteryTotalEntries,
 } from "../reducer/slice/createLotteryConfigSlice";
 
+// ==========================================================
+// WHATSAPP SUPPORT NUMBER
+// IMPORTANT: Country code ke saath number likhein.
+// Example India: 919876543210
+// ==========================================================
+const WHATSAPP_NUMBER = "91XXXXXXXXXX";
+
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,6 +61,23 @@ const ProfilePage = () => {
   };
 
   // ==========================================
+  // WHATSAPP SUPPORT
+  // ==========================================
+  const handleWhatsAppSupport = () => {
+    const message = encodeURIComponent(
+      "Hello, mujhe support chahiye."
+    );
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
+  // ==========================================
   // WALLET
   // ==========================================
   const walletBalance = Number(user?.wallet || 0);
@@ -65,6 +89,7 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white px-5 pt-3 pb-6">
+
       {/* ==========================================
           PROFILE CARD
       ========================================== */}
@@ -82,6 +107,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="relative flex items-center gap-4">
+
           {/* Profile Icon */}
           <div className="w-[112px] h-[112px] rounded-full border-[3px] border-[#f5c542] flex-shrink-0 flex items-center justify-center">
             <div className="w-[98px] h-[98px] rounded-full bg-black/50 flex items-center justify-center overflow-hidden">
@@ -95,7 +121,9 @@ const ProfilePage = () => {
 
           {/* User Info */}
           <div className="min-w-0 flex-1">
-            <p className="text-[#bcbcbc] text-[16px]">नमस्ते,</p>
+            <p className="text-[#bcbcbc] text-[16px]">
+              नमस्ते,
+            </p>
 
             <h1 className="text-white text-[27px] font-extrabold leading-tight truncate">
               {user?.name || "उपयोगकर्ता"}
@@ -120,6 +148,7 @@ const ProfilePage = () => {
             TICKET / WINNER STATS
         ========================================== */}
         <div className="mt-5 h-[88px] rounded-2xl border border-[#373737] bg-black/40 flex items-center overflow-hidden">
+
           {/* TOTAL TICKETS */}
           <div className="flex-1 flex items-center gap-3 px-5">
             <div className="w-12 h-12 rounded-full bg-[#211b0b] flex items-center justify-center flex-shrink-0">
@@ -227,6 +256,8 @@ const ProfilePage = () => {
           MENU
       ========================================== */}
       <div className="mt-4 flex flex-col gap-3">
+
+        {/* MY TICKETS */}
         <ProfileMenu
           icon={<Ticket />}
           title="मेरे टिकट"
@@ -234,6 +265,7 @@ const ProfilePage = () => {
           onClick={() => navigate("/my-tickets")}
         />
 
+        {/* RESULT */}
         <ProfileMenu
           icon={<Trophy />}
           title="रिजल्ट"
@@ -241,10 +273,14 @@ const ProfilePage = () => {
           onClick={() => navigate("/result")}
         />
 
+        {/* ==========================================
+            WHATSAPP SUPPORT
+        ========================================== */}
         <ProfileMenu
           icon={<Headphones />}
           title="सहायता"
           description="किसी भी समस्या के लिए हमसे संपर्क करें"
+          onClick={handleWhatsAppSupport}
         />
 
         {/* LOGOUT */}
