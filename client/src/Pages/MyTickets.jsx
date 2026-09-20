@@ -13,6 +13,15 @@ import {
   getMyLotteryEntries,
 } from "../reducer/slice/createLotteryConfigSlice";
 
+// ==========================================================
+// GLOW STYLE (yellow highlight for icons)
+// ==========================================================
+
+const GLOW_STYLE = {
+  filter:
+    "drop-shadow(0 0 7px rgba(245,197,66,0.95)) drop-shadow(0 0 18px rgba(245,197,66,0.7)) drop-shadow(0 0 30px rgba(245,197,66,0.4))",
+};
+
 const MONTH_NAMES_HI = [
   "जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून",
   "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर",
@@ -203,7 +212,8 @@ const MyTickets = () => {
             <Ticket
               size={42}
               strokeWidth={1.8}
-              className="text-[#f5c542] rotate-[-18deg] drop-shadow-[0_0_10px_rgba(245,197,66,0.35)] shrink-0"
+              className="text-[#f5c542] rotate-[-18deg] shrink-0"
+              style={GLOW_STYLE}
             />
             <div className="min-w-0">
               <h1 className="text-[25px] sm:text-[30px] leading-none font-extrabold tracking-tight">
@@ -219,7 +229,11 @@ const MyTickets = () => {
             className="shrink-0 w-[112px] sm:w-[135px] h-[45px] rounded-[11px] border border-[#a38b35] bg-[#080a09] px-[11px] flex items-center justify-between text-white"
           >
             <span className="text-[13px] font-medium">सभी टिकट</span>
-            <ChevronDown size={19} strokeWidth={2.3} />
+            <ChevronDown
+              size={19}
+              strokeWidth={2.3}
+              style={GLOW_STYLE}
+            />
           </button>
         </div>
 
@@ -243,7 +257,11 @@ const MyTickets = () => {
 
         {myEntriesLoading ? (
           <div className="h-[160px] rounded-[16px] border border-[#282b29] bg-[#090b0b] flex flex-col items-center justify-center">
-            <Ticket size={40} className="text-[#f5c542] animate-pulse" />
+            <Ticket
+              size={40}
+              className="text-[#f5c542] animate-pulse"
+              style={GLOW_STYLE}
+            />
             <p className="mt-3 text-[13px] text-white/60">
               आपके टिकट लोड हो रहे हैं...
             </p>
@@ -266,7 +284,11 @@ const MyTickets = () => {
             ))
           ) : (
             <div className="h-[160px] rounded-[16px] border border-[#282b29] bg-[#090b0b] flex flex-col items-center justify-center">
-              <Ticket size={40} className="text-[#f5c542]" />
+              <Ticket
+                size={40}
+                className="text-[#f5c542]"
+                style={GLOW_STYLE}
+              />
               <p className="mt-3 text-[13px] text-white/60">
                 इस श्रेणी में कोई टिकट नहीं है
               </p>
@@ -290,7 +312,11 @@ const LotteryTicket = ({ ticket, copyId, marketName }) => {
           size={43}
           strokeWidth={1.5}
           fill="#f7d24d"
-          className="text-[#f7d24d] drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
+          className="text-[#f7d24d]"
+          style={{
+            filter:
+              "drop-shadow(0 0 8px rgba(247,210,77,0.9)) drop-shadow(0 0 16px rgba(247,210,77,0.55))",
+          }}
         />
         <h2 className="mt-[6px] text-[17px] leading-none font-extrabold text-white">
           {marketName}
@@ -382,9 +408,23 @@ const LotteryTicket = ({ ticket, copyId, marketName }) => {
           className={`w-full h-[30px] rounded-[8px] flex items-center justify-center gap-[3px] text-white font-bold ${pending ? "bg-gradient-to-b from-[#ed4d4a] to-[#c82729]" : "bg-gradient-to-b from-[#42c45b] to-[#209d3c]"}`}
         >
           {pending ? (
-            <Clock3 size={14} strokeWidth={2} />
+            <Clock3
+              size={14}
+              strokeWidth={2}
+              style={{
+                filter:
+                  "drop-shadow(0 0 6px rgba(255,255,255,0.85))",
+              }}
+            />
           ) : (
-            <CheckCircle2 size={14} strokeWidth={2} />
+            <CheckCircle2
+              size={14}
+              strokeWidth={2}
+              style={{
+                filter:
+                  "drop-shadow(0 0 6px rgba(255,255,255,0.85))",
+              }}
+            />
           )}
           <span className="text-[10px]">{ticket.statusText}</span>
         </div>
@@ -424,7 +464,14 @@ const LotteryTicket = ({ ticket, copyId, marketName }) => {
               onClick={() => copyId(ticket.id)}
               className="shrink-0"
             >
-              <Copy size={12} strokeWidth={1.8} />
+              <Copy
+                size={12}
+                strokeWidth={1.8}
+                style={{
+                  filter:
+                    "drop-shadow(0 0 5px rgba(245,197,66,0.85))",
+                }}
+              />
             </button>
           </div>
         </div>

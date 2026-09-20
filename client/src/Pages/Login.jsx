@@ -209,7 +209,11 @@ const Login = () => {
             text-white
             text-[13px]
             placeholder:text-[#777]
+            outline-none
             focus:outline-none
+            focus-visible:outline-none
+            focus:ring-0
+            border-none
           "
                   disabled={loginLoading}
                 />
@@ -253,7 +257,11 @@ const Login = () => {
             text-white
             text-[13px]
             placeholder:text-[#777]
+            outline-none
             focus:outline-none
+            focus-visible:outline-none
+            focus:ring-0
+            border-none
           "
                   disabled={loginLoading}
                 />

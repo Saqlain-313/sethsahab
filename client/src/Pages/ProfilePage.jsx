@@ -39,6 +39,15 @@ import {
 const WHATSAPP_NUMBER = "91XXXXXXXXXX";
 
 // ==========================================================
+// GLOW STYLE (yellow highlight for icons)
+// ==========================================================
+
+const GLOW_STYLE = {
+  filter:
+    "drop-shadow(0 0 7px rgba(245,197,66,0.95)) drop-shadow(0 0 18px rgba(245,197,66,0.7)) drop-shadow(0 0 30px rgba(245,197,66,0.4))",
+};
+
+// ==========================================================
 // PROFILE PAGE
 // ==========================================================
 
@@ -300,6 +309,7 @@ const ProfilePage = () => {
                 size={65}
                 strokeWidth={1.4}
                 className="text-[#f5c542]"
+                style={GLOW_STYLE}
               />
 
             </div>
@@ -328,9 +338,9 @@ const ProfilePage = () => {
           <button
             type="button"
             onClick={handleOpenEditProfile}
-            className="absolute right-0 top-[68px] border border-[#f5c542] text-[#f5c542] rounded-xl px-3 py-2 flex items-center gap-2 text-[13px] font-semibold active:scale-95 transition"
+            className="absolute mt-2 right-0 top-[68px] border border-[#f5c542] text-[#f5c542] rounded-xl px-3 py-2 flex items-center gap-2 text-[13px] font-semibold active:scale-95 transition"
           >
-            <Edit3 size={16} />
+            <Edit3 size={16} style={GLOW_STYLE} />
             संपादित करें
           </button>
 
@@ -352,6 +362,7 @@ const ProfilePage = () => {
                 size={28}
                 fill="#f5c542"
                 className="text-[#f5c542]"
+                style={GLOW_STYLE}
               />
 
             </div>
@@ -368,6 +379,7 @@ const ProfilePage = () => {
                   <Loader2
                     size={24}
                     className="text-[#f5c542] animate-spin"
+                    style={GLOW_STYLE}
                   />
                 ) : (
                   totalTickets
@@ -391,6 +403,7 @@ const ProfilePage = () => {
                 size={29}
                 fill="#f5c542"
                 className="text-[#f5c542]"
+                style={GLOW_STYLE}
               />
 
             </div>
@@ -433,6 +446,7 @@ const ProfilePage = () => {
               size={31}
               fill="#f5c542"
               className="text-[#f5c542]"
+              style={GLOW_STYLE}
             />
 
           </div>
@@ -481,7 +495,7 @@ const ProfilePage = () => {
           MENU
       ================================================== */}
 
-      <div className="mt-4 flex flex-col gap-3">
+     <div className="mt-4 flex flex-col gap-3">
 
         {/* MY TICKETS */}
 
@@ -525,11 +539,13 @@ const ProfilePage = () => {
               <Loader2
                 size={29}
                 className="text-[#f5c542] animate-spin"
+                style={GLOW_STYLE}
               />
             ) : (
               <LogOut
                 size={31}
                 className="text-[#f5c542]"
+                style={GLOW_STYLE}
               />
             )}
 
@@ -804,17 +820,16 @@ const ProfileMenu = ({
       onClick={onClick}
       className="w-full rounded-[18px] border border-[#303030] bg-[#0b0c0c] px-7 py-4 flex items-center gap-5 text-left transition active:scale-[0.99]"
     >
-
       <div className="w-[60px] h-[60px] rounded-full border border-[#80631f] bg-black/50 flex items-center justify-center flex-shrink-0">
-
-        <span className="text-[#f5c542]">
+        <span
+          className="text-[#f5c542] inline-flex"
+          style={GLOW_STYLE}
+        >
           {icon}
         </span>
-
       </div>
 
       <div className="flex-1 min-w-0">
-
         <p className="text-white text-[21px] font-extrabold">
           {title}
         </p>
@@ -822,14 +837,12 @@ const ProfileMenu = ({
         <p className="text-[#bcbcbc] text-[14px] mt-1 truncate">
           {description}
         </p>
-
       </div>
 
       <ChevronRight
         size={31}
         className="text-white flex-shrink-0"
       />
-
     </button>
   );
 };
