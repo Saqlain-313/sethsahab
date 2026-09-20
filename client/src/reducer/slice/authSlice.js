@@ -92,6 +92,9 @@ const initialState = {
   loginLoading: false,
   loginError: null,
 
+  // IMPORTANT:
+  // On first app load we don't know yet whether
+  // the user has an existing authenticated session.
   profileLoading: false,
   profileError: null,
 
@@ -162,6 +165,10 @@ const authSlice = createSlice({
 
         state.user = action.payload?.data || null;
         state.isAuthenticated = true;
+
+        // Login has successfully established authentication.
+        // Profile initialization is no longer pending.
+        state.profileLoading = false;
       })
 
       .addCase(login.rejected, (state, action) => {
@@ -171,6 +178,7 @@ const authSlice = createSlice({
 
         state.user = null;
         state.isAuthenticated = false;
+        state.profileLoading = false;
       });
 
     // =======================
@@ -216,6 +224,8 @@ const authSlice = createSlice({
 
         state.user = null;
         state.isAuthenticated = false;
+
+        state.profileLoading = false;
       })
 
       .addCase(logout.rejected, (state, action) => {

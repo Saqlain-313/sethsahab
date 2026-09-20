@@ -151,7 +151,7 @@ const HomeLotterySection = () => {
       ===================================================== */}
 
       <div
-        className="relative w-full h-[100px] rounded-[19px] border border-[#55513e] overflow-hidden"
+        className=""
         style={{
           background: "linear-gradient(180deg, #151613 0%, #080908 100%)",
           boxShadow:
@@ -163,9 +163,9 @@ const HomeLotterySection = () => {
         <div className="relative h-full flex items-center">
           <div className="w-[76px] flex justify-center flex-shrink-0">
             <CalendarDays
-              size={42}
-              strokeWidth={2.2}
-              className="text-[#f5c542] drop-shadow-[0_0_7px_rgba(245,197,66,0.45)]"
+              size={48}
+              strokeWidth={2.5}
+              className="text-[#f5c542] drop-shadow-[0_0_8px_rgba(245,197,66,0.9)] drop-shadow-[0_0_20px_rgba(245,197,66,0.65)]"
             />
           </div>
 
@@ -261,32 +261,35 @@ const HomeLotterySection = () => {
         type="button"
         onClick={handleBuyTicket}
         disabled={!isActive}
-        className={`relative mt-[16px] w-full h-[70px] rounded-[13px] flex items-center justify-center gap-[12px] text-black overflow-hidden transition-transform ${
-          isActive
-            ? "active:scale-[0.99] cursor-pointer"
-            : "opacity-60 cursor-not-allowed"
-        }`}
+        className={`relative mt-[16px] w-full h-[70px] rounded-[13px] flex items-center justify-center gap-[12px] text-black overflow-hidden transition-all duration-200 ${isActive
+          ? "active:scale-[0.99] cursor-pointer hover:brightness-105"
+          : "opacity-60 cursor-not-allowed"
+          }`}
         style={{
           background:
-            "linear-gradient(180deg, #ffe477 0%, #f5c542 52%, #e4ae16 100%)",
-          border: "1px solid #ffe88a",
+            "linear-gradient(180deg, #fff08a 0%, #f5c542 52%, #e4ae16 100%)",
+          border: "1px solid #fff0a8",
           boxShadow:
-            "0 4px 15px rgba(245,197,66,0.28), inset 0 1px 0 rgba(255,255,255,0.75), inset 0 -3px 6px rgba(155,105,0,0.22)",
+            "0 0 18px rgba(245,197,66,0.45), 0 6px 22px rgba(245,197,66,0.32), inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -3px 6px rgba(155,105,0,0.22)",
         }}
       >
-        <div className="absolute top-0 left-[12%] right-[12%] h-[1px] bg-white/80" />
+        <div className="absolute top-0 left-[10%] right-[10%] h-[2px] bg-white/90 blur-[1px]" />
 
         <Ticket
-          size={35}
-          strokeWidth={2.5}
-          className="text-[#090909] rotate-[-17deg] shrink-0"
+          size={38}
+          strokeWidth={2.7}
+          className="text-[#090909] rotate-[-17deg] shrink-0 drop-shadow-[0_2px_2px_rgba(0,0,0,0.18)]"
         />
 
         <span className="text-[24px] font-extrabold tracking-tight">
           अभी टिकट खरीदें
         </span>
 
-        <ArrowRight size={30} strokeWidth={3} className="shrink-0" />
+        <ArrowRight
+          size={32}
+          strokeWidth={3}
+          className="shrink-0 drop-shadow-[0_2px_2px_rgba(0,0,0,0.15)]"
+        />
       </button>
 
       {/* =====================================================
@@ -300,25 +303,42 @@ const HomeLotterySection = () => {
         }}
       >
         <TrustItem
-          icon={<Users size={27} strokeWidth={2.3} />}
+          icon={
+            <Users
+              size={27}
+              strokeWidth={2.3}
+              className="text-[#f5c542] drop-shadow-[0_0_6px_rgba(245,197,66,0.8)] drop-shadow-[0_0_14px_rgba(245,197,66,0.45)]"
+            />
+          }
           text="लाखों विजेता"
         />
 
         <div className="h-[27px] w-px bg-[#343634]" />
 
         <TrustItem
-          icon={<ShieldCheck size={27} strokeWidth={2.3} />}
+          icon={
+            <ShieldCheck
+              size={27}
+              strokeWidth={2.3}
+              className="text-[#f5c542] drop-shadow-[0_0_6px_rgba(245,197,66,0.8)] drop-shadow-[0_0_14px_rgba(245,197,66,0.45)]"
+            />
+          }
           text="100% भुगतान"
         />
 
         <div className="h-[27px] w-px bg-[#343634]" />
 
         <TrustItem
-          icon={<Headphones size={27} strokeWidth={2.3} />}
+          icon={
+            <Headphones
+              size={27}
+              strokeWidth={2.3}
+              className="text-[#f5c542] drop-shadow-[0_0_6px_rgba(245,197,66,0.8)] drop-shadow-[0_0_14px_rgba(245,197,66,0.45)]"
+            />
+          }
           text="24/7 सहायता"
         />
       </div>
-
       {/* =====================================================
           MOTIVATION
       ===================================================== */}
@@ -337,9 +357,9 @@ const HomeLotterySection = () => {
         <div className="h-full flex items-center px-[18px]">
           <div className="w-[76px] flex-shrink-0 flex justify-center">
             <BarChart3
-              size={52}
-              strokeWidth={2.1}
-              className="text-[#f5c542] drop-shadow-[0_0_8px_rgba(245,197,66,0.3)]"
+              size={56}
+              strokeWidth={2.4}
+              className="text-[#f5c542] drop-shadow-[0_0_7px_rgba(245,197,66,0.95)] drop-shadow-[0_0_18px_rgba(245,197,66,0.7)] drop-shadow-[0_0_30px_rgba(245,197,66,0.4)]"
             />
           </div>
 
