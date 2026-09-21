@@ -8,16 +8,17 @@ const {
   getAllDepositsForAdmin,
 } = require("../controllers/depositecontroller");
 
-
-
 const uploadDeposit = require("../middleware/depositUpload.js");
 const authMiddleware = require("../middleware/authMiddleware");
-const { requireVerifiedKYC } = require("../middleware/kycVerificationMiddleware");
+const {
+  requireVerifiedKYC,
+} = require("../middleware/kycVerificationMiddleware");
 
 const router = express.Router();
 
 // =====================================================
 // CREATE DEPOSIT
+// POST /deposit
 // =====================================================
 
 router.post(
@@ -34,7 +35,8 @@ router.post(
 );
 
 // =====================================================
-// TURNOVER HISTORY
+// MY TURNOVER HISTORY
+// GET /deposit/turnover
 // =====================================================
 
 router.get(
@@ -45,6 +47,7 @@ router.get(
 
 // =====================================================
 // MY DEPOSIT HISTORY
+// GET /deposit
 // =====================================================
 
 router.get(
@@ -53,6 +56,11 @@ router.get(
   getMyDeposits
 );
 
+// =====================================================
+// ADMIN - GET ALL DEPOSITS
+// GET /deposits
+// =====================================================
+
 router.get(
   "/deposits",
   authMiddleware,
@@ -60,12 +68,20 @@ router.get(
 );
 
 // =====================================================
-// AUTOMATIC PAYMENT CALLBACK
+// QWACKPAY AUTOMATIC PAYMENT CALLBACK
+// POST/GET/PUT/etc. /deposit/callback
+//
+// No authMiddleware here.
+// QwackPay directly calls this endpoint.
 // =====================================================
 
 router.all(
   "/deposit/callback",
   onlinePayCallback
 );
+
+// =====================================================
+// EXPORT ROUTER
+// =====================================================
 
 module.exports = router;
