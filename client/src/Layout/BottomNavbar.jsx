@@ -31,7 +31,7 @@ const navItems = [
 
 const BottomNavbar = () => {
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[490px] z-50">
       <div className="relative bg-[#0b0b0b]/98 backdrop-blur-xl border-t border-[#2a2a2a] shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
         {/* Top golden glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-[#f5c542] shadow-[0_0_12px_rgba(245,197,66,0.8)]" />
@@ -46,8 +46,7 @@ const BottomNavbar = () => {
                 to={item.path}
                 end={item.path === "/"}
                 className={({ isActive }) =>
-                  `relative flex-1 h-full flex flex-col items-center justify-center gap-1 transition-all duration-200 ${
-                    isActive ? "text-[#f5c542]" : "text-[#b8b8b8]"
+                  `relative flex-1 h-full flex flex-col items-center justify-center gap-1 transition-all duration-200 ${isActive ? "text-[#f5c542]" : "text-[#b8b8b8]"
                   }`
                 }
               >
@@ -61,17 +60,15 @@ const BottomNavbar = () => {
                     <Icon
                       size={29}
                       strokeWidth={isActive ? 2.4 : 2}
-                      className={`transition-all duration-200 ${
-                        isActive
+                      className={`transition-all duration-200 ${isActive
                           ? "drop-shadow-[0_0_8px_rgba(245,197,66,0.45)]"
                           : ""
-                      }`}
+                        }`}
                     />
 
                     <span
-                      className={`text-[12px] leading-none whitespace-nowrap ${
-                        isActive ? "font-semibold" : "font-normal"
-                      }`}
+                      className={`text-[12px] leading-none whitespace-nowrap ${isActive ? "font-semibold" : "font-normal"
+                        }`}
                     >
                       {item.label}
                     </span>
